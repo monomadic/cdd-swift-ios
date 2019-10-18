@@ -1,0 +1,3135 @@
+openapi: 3.0.0
+info:
+  description: Viamme
+  version: "2.0"
+  title: Viamme API
+paths:
+  /api/v2/profile:
+    post:
+      tags:
+        - User
+      summary: Update profile
+      description: Обновить свои данные
+      parameters:
+        - name: id
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: firstName
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: lastName
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: email
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: logoPath
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: description
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: specialization
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: gender
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: city
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: birthdate
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ok
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/user"
+  /v2/message/send:
+    post:
+      tags:
+        - Message
+      summary: Send message
+      description: Отправка сообщения пользователю или в комнату
+      parameters:
+        - name: request_id
+          in: query
+          description: Идентификатор запроса
+          required: true
+          schema:
+            type: string
+        - name: message_id
+          in: query
+          description: Идентификатор сообщения
+          required: false
+          schema:
+            type: string
+        - name: room_id
+          in: query
+          description: Идентификатор комнаты
+          required: true
+          schema:
+            type: string
+        - name: room_id_list
+          in: query
+          description: Массив Идентификаторов комнат
+          required: true
+          schema:
+            type: string
+        - name: message
+          in: query
+          description: Текст сообщения
+          required: true
+          schema:
+            type: string
+        - name: user_id
+          in: query
+          description: Идентификатор пользоваля, получатель сообщения
+          required: true
+          schema:
+            type: string
+        - name: user_id_list
+          in: query
+          description: Массив идентификаторов пользоваля, получателей сообщения
+          required: true
+          schema:
+            type: string
+        - name: type
+          in: query
+          description: Тип сообщения (text, audio, image, video, file, url)
+          required: true
+          schema:
+            type: string
+        - name: thumbnail
+          in: query
+          description: thumbnail
+          required: false
+          schema:
+            type: string
+        - name: image
+          in: query
+          description: image
+          required: false
+          schema:
+            type: string
+        - name: attachments
+          in: query
+          description: JSon объект. Массив прикрепленных объектов
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ok
+          content:
+            "*/*":
+              schema: {}
+  /api/v2/favoritetour/create:
+    post:
+      tags:
+        - favorite
+      summary: Сreate favorite
+      description: Добавить тур в понравившиеся
+      parameters:
+        - name: tourId
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ok
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/favorite"
+  /api/v2/favoritetour/delete:
+    post:
+      tags:
+        - favorite
+      summary: Delete favorite
+      description: Удалить тур из понравившихся
+      parameters:
+        - name: tourId
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ok
+  /api/v2/favoritetour/list:
+    get:
+      tags:
+        - favorite
+      summary: List favorites
+      description: Показать список понравившихся туров
+      responses:
+        "200":
+          description: ok
+          content:
+            "*/*":
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/favorite"
+  /api/v2/booking/create:
+    post:
+      tags:
+        - booking
+      summary: Сreate booking
+      description: Забронировать экскурсию
+      parameters:
+        - name: tourId
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: scheduleId
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ok
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/booking"
+  /api/v2/booking/list/my:
+    get:
+      tags:
+        - booking
+      summary: List my tours
+      description: Показать список забронированных мной экскурсий
+      responses:
+        "200":
+          description: ok
+          content:
+            "*/*":
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/booking"
+  /api/v2/tour/list/rate:
+    get:
+      tags:
+        - booking
+      summary: List my tours to rate
+      description: Показать список пройденных мной экскурсий, которые надо оценить
+      responses:
+        "200":
+          description: ok
+          content:
+            "*/*":
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/tour"
+  /api/v2/booking/list/guide:
+    get:
+      tags:
+        - booking
+      summary: List my guided tours
+      description: Показать список моих экскурсий(где я экскурсовод)
+      responses:
+        "200":
+          description: ok
+          content:
+            "*/*":
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/booking"
+  /api/v2/schedule/range:
+    post:
+      tags:
+        - schedule
+      summary: Сreate schedule range
+      description: Создать повторяющееся расписание
+      parameters:
+        - name: tourId
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: start
+          in: query
+          description: начало периода, timestamp без времени, только дата
+          required: false
+          schema:
+            type: number
+        - name: end
+          in: query
+          description: конец периода, timestamp без времени, только дата
+          required: false
+          schema:
+            type: number
+        - name: timeOfTheDay
+          in: query
+          description: время в течении дня в часах (number)
+          required: false
+          schema:
+            type: number
+        - name: daysOfTheWeek
+          in: query
+          description: Номера дней недели через запятую
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ok
+  /api/v2/schedule/create:
+    post:
+      tags:
+        - schedule
+      summary: Сreate schedule
+      description: Создать расписание
+      parameters:
+        - name: tourId
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: timestamp
+          in: query
+          required: false
+          schema:
+            type: number
+      responses:
+        "200":
+          description: ok
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/schedule"
+  /api/v2/schedule/update:
+    post:
+      tags:
+        - schedule
+      summary: Update schedule
+      description: Обновить расписание
+      parameters:
+        - name: id
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: tourId
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: timestamp
+          in: query
+          required: false
+          schema:
+            type: number
+      responses:
+        "200":
+          description: ok
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/schedule"
+  /api/v2/schedule/delete:
+    post:
+      tags:
+        - schedule
+      summary: Delete schedule
+      description: Удалить 1 элемент расписания
+      parameters:
+        - name: id
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ok
+  /api/v2/schedule/list:
+    get:
+      tags:
+        - schedule
+      summary: List tour schedule
+      description: Расписание 1 тура
+      parameters:
+        - name: tourId
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: start
+          in: query
+          description: начало периода
+          required: false
+          schema:
+            type: number
+        - name: end
+          in: query
+          description: конец периода
+          required: false
+          schema:
+            type: number
+      responses:
+        "200":
+          description: ok
+  /api/v2/schedule/list/my:
+    get:
+      tags:
+        - schedule
+      summary: List my schedule
+      description: Расписание всех моих туров(как гида)
+      parameters:
+        - name: start
+          in: query
+          description: начало периода
+          required: false
+          schema:
+            type: number
+        - name: end
+          in: query
+          description: конец периода
+          required: false
+          schema:
+            type: number
+      responses:
+        "200":
+          description: ok
+  /api/v2/guide/create:
+    post:
+      tags:
+        - guide
+      summary: Сreate guide
+      description: Создать гид
+      parameters:
+        - name: name
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: description
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: tags
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: price
+          in: query
+          required: false
+          schema:
+            type: number
+        - name: city
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: country
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: category
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: places
+          in: query
+          description: Locations list
+          required: false
+          schema:
+            type: string
+        - name: published
+          in: query
+          required: false
+          schema:
+            type: boolean
+      responses:
+        "200":
+          description: ok
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/guide"
+  /api/v2/guide/update:
+    post:
+      tags:
+        - guide
+      summary: Update guide
+      description: Обновить гид
+      parameters:
+        - name: id
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: description
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: tags
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: price
+          in: query
+          required: false
+          schema:
+            type: number
+        - name: city
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: country
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: category
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: places
+          in: query
+          description: Locations list
+          required: false
+          schema:
+            type: string
+        - name: published
+          in: query
+          required: false
+          schema:
+            type: boolean
+      responses:
+        "200":
+          description: ok
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/guide"
+  /api/v2/guide/get:
+    get:
+      tags:
+        - guide
+      summary: Get guide
+      description: Посмотреть детали гида
+      parameters:
+        - name: guideId
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ok
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/guide"
+  /api/v2/guide/list:
+    get:
+      tags:
+        - guide
+      summary: List guide
+      description: Посмотреть мои гайды
+      parameters:
+        - name: guideId
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ok
+          content:
+            "*/*":
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/guide"
+  /api/v2/guide/search:
+    get:
+      tags:
+        - guide
+      summary: Search guide
+      description: Найти гайд
+      parameters:
+        - name: pattern
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: city
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: category
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ok
+          content:
+            "*/*":
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/guide"
+  /api/v2/guide/popular:
+    get:
+      tags:
+        - Guide
+      summary: Popular guides
+      description: Популярные гайды
+      parameters:
+        - name: city
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: limit
+          in: query
+          required: true
+          schema:
+            type: number
+      responses:
+        "200":
+          description: ok
+          content:
+            "*/*":
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/guide"
+  /api/v2/guide/point/add:
+    post:
+      tags:
+        - Guide
+      summary: Add guide place
+      description: Добавить место к гайду
+      parameters:
+        - name: guideId
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: name
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: description
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: address
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: geoPosition
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ok
+  /api/v2/guide/image/add:
+    post:
+      tags:
+        - Guide
+      summary: Add guide image
+      description: Добавить картинку к гайду
+      parameters:
+        - name: guideId
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: name
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: description
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: path
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ok
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/image"
+  /api/v2/tour/image/add:
+    post:
+      tags:
+        - Tour
+      summary: Add tour image
+      description: Добавить картинку к экскурсии
+      parameters:
+        - name: tourId
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: name
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: description
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: path
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ok
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/image"
+  /api/v2/guide/comment:
+    post:
+      tags:
+        - Guide
+      summary: Сreate guide comment
+      description: Создать комментарий к гайду
+      parameters:
+        - name: message
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: rating
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: guideId
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ok
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/comment"
+  /api/v2/tour/image/delete:
+    post:
+      tags:
+        - Tour
+      summary: Delete tour image
+      description: Удалить картинку из экскурсии
+      parameters:
+        - name: tourId
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: name
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ok
+  /api/v2/guide/point/delete:
+    post:
+      tags:
+        - Guide
+      summary: Delete guide place
+      description: Удалить место из гайда
+      parameters:
+        - name: guideId
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: name
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ok
+  /api/v2/guide/image/delete:
+    post:
+      tags:
+        - Guide
+      summary: Delete guide image
+      description: Удалить картинку из гайда
+      parameters:
+        - name: guideId
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: name
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ok
+  /api/v2/tour/comment:
+    post:
+      tags:
+        - Tour
+      summary: Сreate tour comment
+      description: Создать комментарий к туру
+      parameters:
+        - name: message
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: rating
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: tourId
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ok
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/comment"
+  /api/v2/guide/comment/list:
+    get:
+      tags:
+        - Guide
+      summary: List guide comments
+      description: Показать список комментариев для гайда с пагинацией, отсортированных от
+        самых новых к старым
+      parameters:
+        - name: guideId
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: start
+          in: query
+          description: С какой даты загружать(timestamp в милисекундах). По умолчанию - now
+          required: false
+          schema:
+            type: number
+        - name: limit
+          in: query
+          description: Лимит сообщений. По умолчанию - 5
+          required: false
+          schema:
+            type: number
+      responses:
+        "200":
+          description: ok
+          content:
+            "*/*":
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/comment"
+  /api/v2/tour/comment/list:
+    get:
+      tags:
+        - Tour
+      summary: List tour comments
+      description: Показать список комментариев для тура
+      parameters:
+        - name: tourId
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ok
+          content:
+            "*/*":
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/comment"
+  /api/v2/tour/create:
+    post:
+      tags:
+        - Tour
+      summary: Сreate tour
+      description: Создать экскурсию
+      parameters:
+        - name: name
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: description
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: tags
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: price
+          in: query
+          required: false
+          schema:
+            type: number
+        - name: duration
+          in: query
+          required: false
+          schema:
+            type: number
+        - name: startHour
+          in: query
+          required: false
+          schema:
+            type: number
+        - name: maxPeople
+          in: query
+          required: false
+          schema:
+            type: integer
+        - name: specialization
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: language
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: transfer
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: city
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: country
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: published
+          in: query
+          required: false
+          schema:
+            type: boolean
+      responses:
+        "200":
+          description: ok
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/tour"
+  /api/v2/tour/update:
+    post:
+      tags:
+        - Tour
+      summary: Update tour
+      description: Обновить информацию об экскурсии
+      parameters:
+        - name: id
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: name
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: description
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: tags
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: price
+          in: query
+          required: false
+          schema:
+            type: number
+        - name: duration
+          in: query
+          required: false
+          schema:
+            type: number
+        - name: startHour
+          in: query
+          required: false
+          schema:
+            type: number
+        - name: maxPeople
+          in: query
+          required: false
+          schema:
+            type: integer
+        - name: specialization
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: language
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: transfer
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: city
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: country
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: published
+          in: query
+          required: false
+          schema:
+            type: boolean
+      responses:
+        "200":
+          description: ok
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/tour"
+  /api/v2/tour/delete:
+    post:
+      tags:
+        - Tour
+      summary: Delete tour
+      description: Удалить экскурсию
+      parameters:
+        - name: id
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ok
+  /api/v2/tour/get:
+    get:
+      tags:
+        - Tour
+      summary: Get tour info
+      description: Показать детали экскурсии
+      parameters:
+        - name: tourId
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ok
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/tourFull"
+  /api/v2/tour/list:
+    get:
+      tags:
+        - Tour
+      summary: List my tours
+      description: Показать список моих экскурсий
+      responses:
+        "200":
+          description: ok
+          content:
+            "*/*":
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/tour"
+  /api/v2/tour/popular:
+    get:
+      tags:
+        - Tour
+      summary: Popular tours
+      description: Популярные экскурсии
+      parameters:
+        - name: city
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: limit
+          in: query
+          required: true
+          schema:
+            type: number
+      responses:
+        "200":
+          description: ok
+          content:
+            "*/*":
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/tour"
+  /api/v2/tour/search:
+    get:
+      tags:
+        - Tour
+      summary: Search tours
+      description: Найти экскурсию
+      parameters:
+        - name: pattern
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: city
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: isGroup
+          in: query
+          required: true
+          schema:
+            type: boolean
+        - name: startDate
+          in: query
+          required: true
+          schema:
+            type: number
+        - name: endDate
+          in: query
+          required: true
+          schema:
+            type: number
+      responses:
+        "200":
+          description: ok
+          content:
+            "*/*":
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/tour"
+  /api/v2/login:
+    post:
+      tags:
+        - Auth
+      summary: Login
+      description: Авторизация
+      parameters:
+        - name: phone
+          in: query
+          description: Телефон пользователя
+          required: true
+          schema:
+            type: string
+        - name: code
+          in: query
+          description: SMS код
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ok
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/userAuth"
+  /api/v2/register:
+    post:
+      tags:
+        - Auth
+      summary: Регистрация
+      description: Зарегистрировать нового пользователя
+      parameters:
+        - name: phone
+          in: query
+          description: Телефон пользователя
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ok
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/user"
+  "/api/v2/user/{user_id}/addressbook":
+    post:
+      tags:
+        - User
+      summary: Update addressbook
+      description: Добавить новые контакты в Addressbook
+      parameters:
+        - name: user_id
+          in: path
+          description: Идентификатор пользователя
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/addressbook"
+        description: Словарь пар номер телефона->имя пользователя
+        required: true
+      responses:
+        "200":
+          description: ok
+  /api/v1/app/check:
+    get:
+      tags:
+        - Push
+      summary: Push check
+      description: Проверяет у его есть токен для пушей
+      parameters:
+        - name: users
+          in: query
+          description: Список id пользователей
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ok
+  /api/v1/app/register:
+    get:
+      tags:
+        - Push
+      summary: Register Push
+      description: Зарегистрироваться для получения push нотификаций.
+      parameters:
+        - name: owner
+          in: query
+          description: Идентификатор пользователя
+          required: true
+          schema:
+            type: string
+        - name: platform
+          in: query
+          description: Тип мобильника
+          required: true
+          schema:
+            type: string
+        - name: token
+          in: query
+          description: push token
+          required: true
+          schema:
+            type: string
+        - name: hwid
+          in: query
+          description: hwid
+          required: true
+          schema:
+            type: string
+        - name: is_dev
+          in: query
+          description: is_dev
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ok
+  /api/v1/app/unregister:
+    get:
+      tags:
+        - Push
+      summary: Unregister Push
+      description: Разрегистрироваться для отказа от push нотификаций
+      parameters:
+        - name: token
+          in: query
+          description: Токен
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ok
+  /api/v1/user/getLastOnline:
+    get:
+      tags:
+        - User
+      summary: Last online
+      description: Кто и когда был онлайн
+      parameters:
+        - name: userId
+          in: query
+          description: ID пользователя, который нас интересует
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ok
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/recentStatus"
+  /api/v1/user/getOnline:
+    get:
+      tags:
+        - User
+      summary: Online users
+      description: Список online пользователей
+      parameters:
+        - name: userList
+          in: query
+          description: Список пользователей, чей статус нас интересует(через запятую)
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ok
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/userOnlineList"
+  "/api/v1/room/{room_id}":
+    delete:
+      tags:
+        - Room
+      summary: Delete(detach) Room
+      description: Удалить диалог со своей стороны
+      parameters:
+        - name: room_id
+          in: path
+          description: Идентификатор группы
+          required: true
+          schema:
+            type: string
+        - name: token
+          in: header
+          description: Auth token
+          required: true
+          schema:
+            type: string
+        - name: userId
+          in: query
+          description: Идентификатор пользователя. Используется, если token пустой
+          required: false
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: ok
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/room_rename"
+  "/api/v1/roomCreate/{room_id}":
+    put:
+      tags:
+        - Room
+      summary: Create Room
+      description: Создать новую комнату
+      parameters:
+        - name: room_id
+          in: path
+          description: Идентификатор группы
+          required: true
+          schema:
+            type: string
+        - name: token
+          in: header
+          description: Auth token
+          required: true
+          schema:
+            type: string
+        - name: userId
+          in: query
+          description: Идентификатор пользователя. Используется, если token пустой
+          required: false
+          schema:
+            type: integer
+        - name: room_name
+          in: query
+          description: Имя комнаты
+          required: false
+          schema:
+            type: string
+        - name: image
+          in: query
+          description: Линк на аватарку комнаты
+          required: false
+          schema:
+            type: string
+        - name: is_attach
+          in: query
+          description: Не используется
+          required: false
+          schema:
+            type: boolean
+        - name: type
+          in: query
+          description: Тип комнаты(privateRoom|group)
+          required: false
+          schema:
+            type: string
+        - name: userList
+          in: query
+          description: Список участников
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ok
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/room_create"
+  "/api/v1/room/{room_id}/reset":
+    get:
+      tags:
+        - Room
+      summary: Remove Room Data
+      description: Удалить все данные о группе, включая сообщения.
+      parameters:
+        - name: room_id
+          in: path
+          description: Идентификатор группы
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ok
+  "/api/v1/user/{user_id}/rooms/{room_id}/delete":
+    get:
+      tags:
+        - Room
+      summary: Delete Room
+      description: Удалить(покинуть) комнату для этого пользователя(собеседник продолжает
+        видеть комнату)
+      parameters:
+        - name: user_id
+          in: path
+          description: Идентификатор пользователя
+          required: true
+          schema:
+            type: string
+        - name: room_id
+          in: path
+          description: Идентификатор группы
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ok
+  "/api/v1/user/{user_id}/roomsCache":
+    get:
+      tags:
+        - Room
+      summary: Rooms Preview from cache
+      description: Загрузить все комнаты пользователя с preview(количество непрочитанных
+        сообщений и последнее) из кэша
+      parameters:
+        - name: user_id
+          in: path
+          description: Идентификатор пользователя
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ok
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/rooms"
+  "/api/v1/user/{user_id}/rooms":
+    get:
+      tags:
+        - Room
+      summary: Rooms Preview
+      description: Загрузить все комнаты пользователя с preview(количество непрочитанных
+        сообщений и последнее)
+      parameters:
+        - name: user_id
+          in: path
+          description: Идентификатор пользователя
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ok
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/rooms"
+  "/api/v1/user/{user_id}/roomsFullCache":
+    get:
+      tags:
+        - Room
+      summary: Rooms Preview Cache
+      description: Загрузить все комнаты пользователя с preview(количество непрочитанных
+        сообщений и последнее), со списком объектов пользователь
+      parameters:
+        - name: user_id
+          in: path
+          description: Идентификатор пользователя
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ok
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/roomsFull"
+  "/api/v1/user/{user_id}/roomsFull":
+    get:
+      tags:
+        - Room
+      summary: Rooms Preview
+      description: Загрузить все комнаты пользователя с preview(количество непрочитанных
+        сообщений и последнее), со списком объектов пользователь
+      parameters:
+        - name: user_id
+          in: path
+          description: Идентификатор пользователя
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ok
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/roomsFull"
+  "/api/v1/room/{room_id}/undelivered":
+    get:
+      tags:
+        - Room
+      summary: Undelivered
+      description: Загрузить все недоставленные мне сообщения из комнаты. (Фильтр по
+        статусу)
+      parameters:
+        - name: room_id
+          in: path
+          description: Идентификатор комнаты
+          required: true
+          schema:
+            type: string
+        - name: token
+          in: header
+          description: Auth token
+          required: true
+          schema:
+            type: string
+        - name: userId
+          in: query
+          description: Идентификатор пользователя. Используется, если token пустой
+          required: false
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: ok
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/messageList"
+  "/api/v2/user/{user_id}":
+    get:
+      tags:
+        - User
+      summary: Get User
+      description: Запросить пользователя
+      parameters:
+        - name: user_id
+          in: path
+          description: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ok
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/user"
+  /api/v2/userList:
+    get:
+      tags:
+        - User
+      summary: User List
+      description: Запросить список пользователей по id
+      parameters:
+        - name: userList
+          in: query
+          description: Список id пользователей через запятую
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ok
+          content:
+            "*/*":
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/userOnline"
+  "/api/v2/room/{room_id}":
+    post:
+      tags:
+        - Room
+      summary: Update Room
+      description: Поменять комнату
+      parameters:
+        - name: room_id
+          in: path
+          description: Идентификатор комнаты
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: query
+          description: New name
+          required: false
+          schema:
+            type: string
+        - name: userList
+          in: query
+          description: Список пользователей
+          required: false
+          schema:
+            type: string
+        - name: image
+          in: query
+          description: Линк на аватарку комнаты
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ok
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/room_create"
+  "/api/v2/room/{room_id}/leave":
+    post:
+      tags:
+        - Room
+      summary: Leave Room
+      description: Покинуть комнату
+      parameters:
+        - name: room_id
+          in: path
+          description: Идентификатор комнаты
+          required: true
+          schema:
+            type: string
+        - name: userId
+          in: query
+          description: Идентификатор пользователя. Используется, если token пустой
+          required: false
+          schema:
+            type: integer
+        - name: token
+          in: header
+          description: Auth token
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ok
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/room_create"
+  "/api/v2/roomCreate/{room_id}":
+    post:
+      tags:
+        - Room
+      summary: Create Room v2
+      description: Создать новую комнату
+      parameters:
+        - name: room_id
+          in: path
+          description: Идентификатор группы
+          required: true
+          schema:
+            type: string
+        - name: token
+          in: header
+          description: Auth token
+          required: true
+          schema:
+            type: string
+        - name: userId
+          in: query
+          description: Идентификатор пользователя. Используется, если token пустой
+          required: false
+          schema:
+            type: integer
+        - name: name
+          in: query
+          description: Имя комнаты
+          required: false
+          schema:
+            type: string
+        - name: image
+          in: query
+          description: Линк на аватарку комнаты
+          required: false
+          schema:
+            type: string
+        - name: type
+          in: query
+          description: Тип комнаты(privateRoom|group)
+          required: false
+          schema:
+            type: string
+        - name: userList
+          in: query
+          description: Список участников
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ok
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/room_create"
+  "/api/v2/room/{room_id}/messageStatus":
+    post:
+      tags:
+        - Room
+      summary: Поменять статус сообщений в комнате по таймстампу
+      description: Поменять статус сообщений в комнате по таймстампу
+      parameters:
+        - name: room_id
+          in: path
+          description: Идентификатор комнаты
+          required: true
+          schema:
+            type: string
+        - name: status
+          in: query
+          description: Новый статус
+          required: true
+          schema:
+            type: string
+        - name: timestamp
+          in: query
+          description: таймстамп
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: ok
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/message"
+  "/api/v2/room/{room_id}/new_messages":
+    get:
+      tags:
+        - Room
+      summary: New Messages
+      description: Загрузить все новые сообщения из комнаты. (Фильтра по времени)
+      parameters:
+        - name: room_id
+          in: path
+          description: Идентификатор комнаты
+          required: true
+          schema:
+            type: string
+        - name: token
+          in: header
+          description: Auth token
+          required: true
+          schema:
+            type: string
+        - name: userId
+          in: query
+          description: Идентификатор пользователя. Используется, если token пустой
+          required: false
+          schema:
+            type: integer
+        - name: ts
+          in: query
+          description: Timestamp
+          required: false
+          schema:
+            type: integer
+        - name: limit
+          in: query
+          description: Лимит количества новых сообщений
+          required: false
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: ok
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/messageList"
+  "/api/v2/rooms/{roomId}/unban":
+    get:
+      tags:
+        - Room
+      summary: Unban room
+      description: Разблокировать комнату
+      parameters:
+        - name: token
+          in: header
+          description: Auth token
+          required: true
+          schema:
+            type: string
+        - name: userId
+          in: query
+          description: Идентификатор пользователя. Используется, если token пустой
+          required: false
+          schema:
+            type: integer
+        - name: roomId
+          in: path
+          description: Идентификатор комнаты
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ok
+  "/api/v2/rooms/{roomId}/ban":
+    get:
+      tags:
+        - Room
+      summary: Ban room
+      description: Заблокировать комнату
+      parameters:
+        - name: token
+          in: header
+          description: Auth token
+          required: true
+          schema:
+            type: string
+        - name: userId
+          in: query
+          description: Идентификатор пользователя. Используется, если token пустой
+          required: false
+          schema:
+            type: integer
+        - name: roomId
+          in: path
+          description: Идентификатор комнаты
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ok
+  /api/v2/rooms/ban:
+    get:
+      tags:
+        - Room
+      summary: Banned Rooms
+      description: Загрузить список идентификаторов забаненых комнат
+      parameters:
+        - name: token
+          in: header
+          description: Auth token
+          required: true
+          schema:
+            type: string
+        - name: userId
+          in: query
+          description: Идентификатор пользователя. Используется, если token пустой
+          required: false
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: ok
+          content:
+            "*/*":
+              schema:
+                type: array
+                items:
+                  type: string
+  "/api/v2/room/{room_id}/images":
+    get:
+      tags:
+        - Room
+      summary: Image messages
+      description: Загрузить все сообщения c картинками из комнаты
+      parameters:
+        - name: room_id
+          in: path
+          description: Идентификатор комнаты
+          required: true
+          schema:
+            type: string
+        - name: token
+          in: header
+          description: Auth token
+          required: true
+          schema:
+            type: string
+        - name: userId
+          in: query
+          description: Идентификатор пользователя. Используется, если token пустой
+          required: false
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: ok
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/messageList"
+  "/api/v2/room/{room_id}/messages":
+    get:
+      tags:
+        - Room
+      summary: Message filter v2
+      description: Загрузить часть сообщений из комнаты. Если date пустая(=0), считается
+        что это первый запрос и сервер возвращает limit последних сообщений в
+        комнате + признак есть ли ещё. Для следующего куска, клиент берет самый
+        старый created timestamp среди полученных сообщений и шлет его в
+        качестве date. Сервер пришлёт следующий кусок из limit сообщений, у
+        которых created timestamp будет меньше указанного
+      parameters:
+        - name: room_id
+          in: path
+          description: Идентификатор комнаты
+          required: true
+          schema:
+            type: string
+        - name: token
+          in: header
+          description: Auth token
+          required: true
+          schema:
+            type: string
+        - name: userId
+          in: query
+          description: Идентификатор пользователя. Используется, если token пустой
+          required: false
+          schema:
+            type: integer
+        - name: limit
+          in: query
+          description: Количество сообщений
+          required: false
+          schema:
+            type: integer
+        - name: date
+          in: query
+          description: Дата в миллисекундах
+          required: false
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: ok
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/messageHistoryList"
+  /api/v2/message/list:
+    get:
+      tags:
+        - Room
+      summary: Message list
+      description: Загрузить сообщения
+      parameters:
+        - name: token
+          in: header
+          description: Auth token
+          required: true
+          schema:
+            type: string
+        - name: userId
+          in: query
+          description: Идентификатор пользователя. Используется, если token пустой
+          required: false
+          schema:
+            type: integer
+        - name: limit
+          in: query
+          description: Количество сообщений
+          required: false
+          schema:
+            type: integer
+        - name: date
+          in: query
+          description: Дата в миллисекундах
+          required: false
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: ok
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/messageHistoryList"
+  "/api/v1/room/{room_id}/messages":
+    get:
+      tags:
+        - Room
+      summary: Message filter
+      description: Загрузить сообщения из комнаты по фильтрам и с разбиением на страницы
+      parameters:
+        - name: room_id
+          in: path
+          description: Идентификатор комнаты
+          required: true
+          schema:
+            type: string
+        - name: token
+          in: header
+          description: Auth token
+          required: true
+          schema:
+            type: string
+        - name: userId
+          in: query
+          description: Идентификатор пользователя. Используется, если token пустой
+          required: false
+          schema:
+            type: integer
+        - name: limit
+          in: query
+          description: Количество сообщений
+          required: false
+          schema:
+            type: integer
+        - name: offset
+          in: query
+          description: Смещение по сообщениям
+          required: false
+          schema:
+            type: integer
+        - name: status
+          in: query
+          description: Статус сообщений. Не используется
+          required: true
+          schema:
+            type: string
+        - name: page
+          in: query
+          description: Страница
+          required: false
+          schema:
+            type: integer
+        - name: date_start
+          in: query
+          description: Параметр c даты начала, UNIX Timestamp
+          required: false
+          schema:
+            type: integer
+        - name: date_end
+          in: query
+          description: Параметр до даты окончания, UNIX Timestamp
+          required: false
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: ok
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/messageList"
+  /api/internal/push/send:
+    post:
+      tags:
+        - REST Internal
+      summary: Send general push
+      description: Послать push с сообщением
+      parameters:
+        - name: phones
+          in: query
+          description: Список телефонов получателей через запятую
+          required: false
+          schema:
+            type: string
+        - name: users
+          in: query
+          description: Список id получателей через запятую
+          required: false
+          schema:
+            type: string
+        - name: message
+          in: query
+          description: Сообщение
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ok
+  /socket/on_joined:
+    get:
+      tags:
+        - socket event
+      summary: on_joined
+      description: Событие срабатывает, если один из пользователей вышел в сеть
+      responses:
+        "200":
+          description: ok
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/on_joined"
+  /socket/attach_room:
+    get:
+      tags:
+        - socket event
+      summary: attach_room
+      description: Создана группа/комната
+      responses:
+        "200":
+          description: ok
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/attach_room"
+  /socket/deattach_room:
+    get:
+      tags:
+        - socket event
+      summary: deattach_room
+      description: Удалили из группы/комнаты
+      responses:
+        "200":
+          description: ok
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/attach_room"
+  /socket/message_change:
+    get:
+      tags:
+        - socket event
+      summary: message_change
+      description: Статус сообщения поменялся
+      responses:
+        "200":
+          description: ok
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/message"
+  /socket/add_user:
+    get:
+      tags:
+        - socket event
+      summary: add_user
+      description: Пользователь добавлен в группу
+      responses:
+        "200":
+          description: User id
+          content:
+            "*/*":
+              schema: {}
+  /socket/remove_user:
+    get:
+      tags:
+        - socket event
+      summary: add_user
+      description: Пользователь удален из группы
+      responses:
+        "200":
+          description: User id
+          content:
+            "*/*":
+              schema: {}
+  /socket/rooms:
+    get:
+      tags:
+        - socket event
+      summary: rooms
+      description: Список всех комнат с количеством непрочитанных сообщений и последнимм
+        сообщением. Приходит коиенту на логине
+      responses:
+        "200":
+          description: Ok
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/rooms"
+  /socket/message_status:
+    post:
+      tags:
+        - socket action
+      summary: message_status
+      description: Пометить сообщения как прочитанные по идентификаторам
+      parameters:
+        - name: status
+          in: query
+          description: Новый статус (delivered|read)
+          required: true
+          schema:
+            type: string
+        - name: messages
+          in: query
+          description: Массив идентификаторов сообщений
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ok
+          content:
+            "*/*":
+              schema: {}
+  /socket/on_message:
+    get:
+      tags:
+        - socket event
+      summary: on_message
+      description: Событие на входящее сообщение
+      responses:
+        "200":
+          description: ok
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/message"
+    post:
+      tags:
+        - socket action
+      summary: on_message
+      description: Отправка сообщения пользователю или в комнату
+      parameters:
+        - name: request_id
+          in: query
+          description: Идентификатор запроса
+          required: true
+          schema:
+            type: string
+        - name: message_id
+          in: query
+          description: Идентификатор сообщения
+          required: false
+          schema:
+            type: string
+        - name: room_id
+          in: query
+          description: Идентификатор комнаты
+          required: true
+          schema:
+            type: string
+        - name: room_id_list
+          in: query
+          description: Массив Идентификаторов комнат
+          required: true
+          schema:
+            type: string
+        - name: message
+          in: query
+          description: Текст сообщения
+          required: true
+          schema:
+            type: string
+        - name: user_id
+          in: query
+          description: Идентификатор пользоваля, получатель сообщения
+          required: true
+          schema:
+            type: string
+        - name: user_id_list
+          in: query
+          description: Массив идентификаторов пользоваля, получателей сообщения
+          required: true
+          schema:
+            type: string
+        - name: type
+          in: query
+          description: Тип сообщения (text, audio, image, video, file, url)
+          required: true
+          schema:
+            type: string
+        - name: thumbnail
+          in: query
+          description: thumbnail
+          required: false
+          schema:
+            type: string
+        - name: image
+          in: query
+          description: image
+          required: false
+          schema:
+            type: string
+        - name: attachments
+          in: query
+          description: JSon объект. Массив прикрепленных объектов
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ok
+          content:
+            "*/*":
+              schema: {}
+  /socket/on_message_update:
+    post:
+      tags:
+        - socket action
+      summary: on_message_update
+      description: Редактирование сообщения
+      parameters:
+        - name: request_id
+          in: query
+          description: Идентификатор запроса
+          required: true
+          schema:
+            type: string
+        - name: message
+          in: query
+          description: Текст сообщения
+          required: true
+          schema:
+            type: string
+        - name: thumbnail
+          in: query
+          description: thumbnail
+          required: false
+          schema:
+            type: string
+        - name: image
+          in: query
+          description: image
+          required: false
+          schema:
+            type: string
+        - name: attachments
+          in: query
+          description: JSon объект. Массив прикрепленных объектов
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ok
+          content:
+            "*/*":
+              schema: {}
+  /socket/message_sent:
+    get:
+      tags:
+        - socket event
+      summary: message_sent
+      description: Ответ на посылку сообзения. Приходит только автору
+      responses:
+        "200":
+          description: ok
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/message"
+  /socket/delete_message:
+    get:
+      tags:
+        - socket event
+      summary: delete_message
+      description: Удалили сообщение
+      responses:
+        "200":
+          description: ok
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/delete_message"
+    post:
+      tags:
+        - socket action
+      summary: delete_message
+      description: Удалить сообщение
+      parameters:
+        - name: message_id
+          in: query
+          description: Идентификатор сообщения
+          required: true
+          schema:
+            type: string
+        - name: message_id_list
+          in: query
+          description: Список идентификаторов сообщений
+          required: true
+          schema:
+            type: string
+        - name: all
+          in: query
+          description: Удалить для всех(а не только для себя)
+          required: false
+          schema:
+            type: boolean
+      responses:
+        "200":
+          description: ok
+          content:
+            "*/*":
+              schema: {}
+  /socket/on_typing:
+    get:
+      tags:
+        - socket event
+      summary: on_typing
+      description: Событие, отображает кто сейчас набирает текст
+      responses:
+        "200":
+          description: ok
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/on_typing"
+    post:
+      tags:
+        - socket action
+      summary: on_typing
+      description: Пользователь набирает текст сообщения
+      parameters:
+        - name: room_id
+          in: query
+          description: Идентификатор комнаты
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ok
+          content:
+            "*/*":
+              schema: {}
+  /socket/stop_typing:
+    get:
+      tags:
+        - socket event
+      summary: stop_typing
+      description: Событие, остановка набора текста
+      responses:
+        "200":
+          description: ok
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/on_typing"
+    post:
+      tags:
+        - socket action
+      summary: stop_typing
+      description: Пользователь перестал набирать текст сообщения
+      parameters:
+        - name: room_id
+          in: query
+          description: Идентификатор комнаты
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ok
+          content:
+            "*/*":
+              schema: {}
+  /socket/on_join:
+    post:
+      tags:
+        - socket action
+      summary: on_join
+      description: Подключение к серверу, авторизация
+      parameters:
+        - name: username
+          in: query
+          description: Идентификатор пользователя
+          required: true
+          schema:
+            type: string
+        - name: tokenauth
+          in: query
+          description: Ключ авторизации пользовтаеля в API-VoipScan
+          required: true
+          schema:
+            type: string
+        - name: tokenapp
+          in: query
+          description: Токен приложения
+          required: true
+          schema:
+            type: string
+        - name: token
+          in: query
+          description: Токен приложения
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Сервер пришлет новому пользователю ивенты on_joined и rooms
+          content:
+            "*/*":
+              schema: {}
+servers:
+  - url: //31.184.251.197/
+components:
+  schemas:
+    on_joined:
+      type: object
+      properties:
+        numUsers:
+          type: integer
+          description: Количество сейчас онлайн
+        username:
+          type: string
+          description: Идентификатор пользоваля
+    attach_room:
+      type: object
+      properties:
+        user_id:
+          type: string
+          description: Идентификатор пользоваля
+        room_id:
+          type: string
+          description: Идентификатор комнаты
+        owner:
+          type: string
+          description: Идентификатор пользоваля - владельца(создателя)
+    room_rename:
+      type: object
+      properties:
+        user_id:
+          type: string
+          description: Идентификатор пользоваля
+        room_id:
+          type: string
+          description: Идентификатор комнаты
+        room_name:
+          type: string
+          description: Новое название комнаты
+        room_name_old:
+          type: string
+          description: Предыдущее название комнаты
+    room_create:
+      type: object
+      properties:
+        request_id:
+          type: string
+          description: Идентификатор запроса
+        room_id:
+          type: string
+          description: Идентификатор комнаты
+        room_name:
+          type: string
+          description: Новое название комнаты
+        image:
+          type: string
+          description: Линк на аватарку
+        owner:
+          type: string
+          description: Идентификатор пользоваля владельца
+        users:
+          type: string
+          description: Массив участников
+    message:
+      type: object
+      properties:
+        message_id:
+          type: string
+          description: Идентификатор сообщений
+        room_id:
+          type: string
+          description: Идентификатор комнаты
+        message:
+          type: string
+          description: Текст сообщения
+        user_id:
+          type: string
+          description: Идентификатор пользоваля, автор сообщения
+        created_at:
+          type: string
+          description: Время отправки сообщения (Timestamp, миллисекунды)
+        modified_at:
+          type: string
+          description: Время изменения сообщения (Timestamp, миллисекунды). Например,
+            отметить как прочитанное, меняет modified.
+        status:
+          type: string
+          description: Статус сообщения(new|delivered|read)
+        image:
+          type: string
+          description: image
+        thumbnail:
+          type: string
+          description: thumbnail
+        attachments:
+          type: array
+          description: массив прикрепленных объектов
+          items:
+            $ref: "#/components/schemas/attachment"
+    attachment:
+      type: object
+      properties:
+        uuid:
+          type: string
+          description: ""
+        type:
+          type: string
+          description: ""
+        url:
+          type: string
+          description: ""
+        thumbnail:
+          type: string
+          description: ""
+        message:
+          type: string
+          description: Ссылка на объект 'message'
+    delete_message:
+      type: object
+      properties:
+        message_id:
+          type: string
+          description: Идентификатор сообщений
+        room_id:
+          type: string
+          description: Идентификатор комнаты
+        user_id:
+          type: string
+          description: Идентификатор пользоваля, автор сообщения
+    on_typing:
+      type: object
+      properties:
+        room_id:
+          type: string
+          description: Идентификатор комнаты
+        user_id:
+          type: string
+          description: Идентификатор пользоваля
+    rooms:
+      type: array
+      items:
+        $ref: "#/components/schemas/room_preview"
+    room_preview:
+      type: object
+      properties:
+        room_id:
+          type: string
+          description: Идентификатор комнаты
+        room_name:
+          type: string
+          description: имя комнаты
+        users:
+          type: array
+          description: Масссив участников
+          items:
+            type: string
+        type:
+          type: string
+          description: Тип комнаты
+        last_message:
+          type: string
+          description: последнее сообщение в группе
+        last_messages:
+          type: string
+          description: 5 последних сообщение в группе
+        unread:
+          type: integer
+          description: количество непрочитнных сообщений
+    roomsFull:
+      type: array
+      items:
+        $ref: "#/components/schemas/room_preview_full"
+    room_preview_full:
+      type: object
+      properties:
+        room_id:
+          type: string
+          description: Идентификатор комнаты
+        name:
+          type: string
+          description: имя комнаты
+        image:
+          type: string
+          description: аватарка комнаты
+        users:
+          type: array
+          description: Масссив участников
+          items:
+            $ref: "#/components/schemas/user"
+        type:
+          type: string
+          description: Тип комнаты
+        last_message:
+          type: string
+          description: последнее сообщение в группе
+        last_messages:
+          type: string
+          description: 5 последних сообщений в группе
+        unread:
+          type: integer
+          description: количество непрочитнных сообщений
+    user:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Идентификатор пользователя
+        firstName:
+          type: string
+          description: Имя собственное
+        lastName:
+          type: string
+          description: Фамилиля
+        phone:
+          type: string
+          description: Телефон
+        logoPath:
+          type: string
+          description: Путь до аватарки
+        email:
+          type: string
+          description: E-Mail
+        description:
+          type: string
+        gender:
+          type: string
+        specialization:
+          type: string
+        city:
+          type: string
+        birthdate:
+          type: string
+    userAuth:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Идентификатор пользователя
+        firstName:
+          type: string
+          description: Имя собственное
+        lastName:
+          type: string
+          description: Фамилиля
+        phone:
+          type: string
+          description: Телефон
+        logoPath:
+          type: string
+          description: Путь до аватарки
+        email:
+          type: string
+          description: E-Mail
+        token:
+          type: string
+          description: Токен для доступа
+        description:
+          type: string
+        gender:
+          type: string
+        specialization:
+          type: string
+        city:
+          type: string
+        birthdate:
+          type: string
+    userOnline:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Идентификатор пользователя
+        firstName:
+          type: string
+          description: Имя собственное
+        lastName:
+          type: string
+          description: Фамилиля
+        phone:
+          type: string
+          description: Телефон
+        logoPath:
+          type: string
+          description: Путь до аватарки
+        email:
+          type: string
+          description: E-Mail
+        status:
+          type: string
+          description: ""
+        description:
+          type: string
+        gender:
+          type: string
+        specialization:
+          type: string
+        city:
+          type: string
+        birthdate:
+          type: string
+    messageList:
+      type: array
+      items:
+        $ref: "#/components/schemas/message"
+    messageHistoryList:
+      type: object
+      properties:
+        hasMore:
+          type: boolean
+          description: Есть ли ещё сообщения в этой комнате
+        result:
+          type: array
+          items:
+            $ref: "#/components/schemas/message"
+    addressbook:
+      type: array
+      items:
+        type: string
+    userOnlineList:
+      type: array
+      items:
+        type: string
+    userOnlineRecentList:
+      type: array
+      items:
+        $ref: "#/components/schemas/recentStatus"
+    recentStatus:
+      type: object
+      properties:
+        last_join_timestamp:
+          type: integer
+          description: Timestamp последнего подключения
+        is_online:
+          type: boolean
+          description: В сети или нет
+        seconds:
+          type: integer
+          description: Прошло секунд с последнего подключния
+        last_time_string:
+          type: string
+          description: Строка статус
+    schedule:
+      type: object
+      properties:
+        id:
+          type: string
+        ownerUserId:
+          type: integer
+          description: Клиент, сделавший бронь
+        tourId:
+          type: string
+        ts:
+          type: integer
+          description: Время события
+    booking:
+      type: object
+      properties:
+        id:
+          type: string
+        ownerUserId:
+          type: integer
+          description: Клиент, сделавший бронь
+        GuideUserId:
+          type: integer
+          description: Экскурсовод
+        createdTs:
+          type: integer
+        tourId:
+          type: string
+        scheduleId:
+          type: string
+        ts:
+          type: integer
+          description: Время события(продублировано из объекта Schedule)
+        status:
+          type: string
+    favorite:
+      type: object
+      properties:
+        id:
+          type: string
+        tourId:
+          type: string
+    comment:
+      type: object
+      properties:
+        id:
+          type: string
+        message:
+          type: string
+        rating:
+          type: number
+        timestamp:
+          type: string
+        tourId:
+          type: string
+        guideId:
+          type: string
+    image:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        path:
+          type: string
+    tour:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ""
+        ownerUserId:
+          type: integer
+          description: ""
+        name:
+          type: string
+          description: ""
+        description:
+          type: string
+          description: ""
+        specialization:
+          type: string
+          description: ""
+        language:
+          type: string
+          description: ""
+        city:
+          type: string
+          description: ""
+        country:
+          type: string
+          description: ""
+        transfer:
+          type: string
+          description: ""
+        tags:
+          type: string
+          description: ""
+        images:
+          type: string
+          description: ""
+        createdTs:
+          type: number
+          description: ""
+        updatedTs:
+          type: number
+          description: ""
+        published:
+          type: boolean
+          description: ""
+    tourFull:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ""
+        ownerUserId:
+          type: integer
+          description: ""
+        name:
+          type: string
+          description: ""
+        description:
+          type: string
+          description: ""
+        specialization:
+          type: string
+          description: ""
+        language:
+          type: string
+          description: ""
+        city:
+          type: string
+          description: ""
+        country:
+          type: string
+          description: ""
+        transfer:
+          type: string
+          description: ""
+        tags:
+          type: string
+          description: ""
+        images:
+          type: array
+          description: ""
+          items:
+            $ref: "#/components/schemas/image"
+        createdTs:
+          type: number
+          description: ""
+        updatedTs:
+          type: number
+          description: ""
+        published:
+          type: boolean
+          description: ""
+        comments:
+          type: array
+          description: ""
+          items:
+            $ref: "#/components/schemas/comment"
+    guide:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ""
+        ownerUserId:
+          type: integer
+          description: ""
+        name:
+          type: string
+          description: ""
+        description:
+          type: string
+          description: ""
+        city:
+          type: string
+          description: ""
+        country:
+          type: string
+          description: ""
+        category:
+          type: string
+          description: ""
+        tags:
+          type: string
+          description: ""
+        createdTs:
+          type: number
+          description: ""
+        updatedTs:
+          type: number
+          description: ""
+        published:
+          type: boolean
+          description: ""
+        places:
+          type: array
+          description: ""
+          items:
+            $ref: "#/components/schemas/guide_places"
+    guide_places:
+      properties:
+        name:
+          type: string
+          description: ""
+        description:
+          type: string
+          description: ""
+        address:
+          type: string
+          description: ""
+        geoPosition:
+          type: string
+          description: ""
