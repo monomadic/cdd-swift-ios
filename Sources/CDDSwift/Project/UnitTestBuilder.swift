@@ -56,7 +56,7 @@ class TestsBuilder {
         
         
         return """
-        // \(method) \(request.urlPath)
+        // \(method) \(request.path)
         func test\(request.name)() {
         let request = \(request.name)(\(buildParams(request.vars)))
         

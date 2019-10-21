@@ -39,30 +39,42 @@ indirect enum Type: Equatable, Codable {
     }
     
     public func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
         switch self {
         case .primitive(let type):
-            try container.encode(type, forKey: .primitive)
+            try type.encode(to: encoder)
+//            try container.encode(type, forKey: .primitive)
         case .array(let type):
-            try container.encode(type, forKey: .array)
+            let str = try type.json()
+            try str.encode(to: encoder)
+//            try container.encode(type, forKey: .array)
         case .complex(let type):
-            try container.encode(type, forKey: .complex)
+            try type.encode(to: encoder)
+//            try container.encode(type, forKey: .complex)
         }
     }
     
     init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        let primitiveType = try? container.decode(PrimitiveType.self, forKey: .primitive)
-        let arrType = try? container.decode(Type.self, forKey: .array)
-        let complexType = try? container.decode(String.self, forKey: .complex)
-        
-        if let type = primitiveType {
-            self = .primitive(type)
-        } else
-        if let type = arrType {
-            self = .array(type)
-        } else  {
-            self = .complex(complexType ?? "")
+        let container = try decoder.singleValueContainer()
+        var str = try container.decode(String.self)
+        self = Type.decode(str:str)
+    }
+    
+    private static func decode(str: String) -> Type {
+        var str = str
+        switch str {
+        case "Int": return .primitive(.Int)
+        case "String": return .primitive(.String)
+        case "Float": return .primitive(.Float)
+        case "Bool": return .primitive(.Bool)
+        default:
+            if String(str.suffix(1)) == "[" {
+                str = String(str.suffix(str.count - 1))
+                str = String(str.prefix(str.count - 1))
+                return .array(decode(str: str))
+            }
+            else {
+                return .complex(str)
+            }
         }
     }
 }
@@ -73,3 +85,4 @@ enum PrimitiveType: String, Codable {
     case Float
     case Bool
 }
+

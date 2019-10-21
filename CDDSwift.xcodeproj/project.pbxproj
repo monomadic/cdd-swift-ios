@@ -41,7 +41,6 @@
 		OBJ_202 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_17 /* Model.swift */; };
 		OBJ_203 /* Project.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_18 /* Project.swift */; };
 		OBJ_204 /* ProjectInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_19 /* ProjectInfo.swift */; };
-		OBJ_205 /* ProjectReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_20 /* ProjectReader.swift */; };
 		OBJ_206 /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_21 /* Request.swift */; };
 		OBJ_207 /* SourceFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_22 /* SourceFile.swift */; };
 		OBJ_208 /* UnitTestBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_23 /* UnitTestBuilder.swift */; };
@@ -414,7 +413,6 @@
 		OBJ_189 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		OBJ_19 /* ProjectInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectInfo.swift; sourceTree = "<group>"; };
 		OBJ_190 /* LICENSE-MIT */ = {isa = PBXFileReference; lastKnownFileType = text; path = "LICENSE-MIT"; sourceTree = "<group>"; };
-		OBJ_20 /* ProjectReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectReader.swift; sourceTree = "<group>"; };
 		OBJ_21 /* Request.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
 		OBJ_22 /* SourceFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceFile.swift; sourceTree = "<group>"; };
 		OBJ_23 /* UnitTestBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitTestBuilder.swift; sourceTree = "<group>"; };
@@ -698,7 +696,6 @@
 				OBJ_17 /* Model.swift */,
 				OBJ_18 /* Project.swift */,
 				OBJ_19 /* ProjectInfo.swift */,
-				OBJ_20 /* ProjectReader.swift */,
 				OBJ_21 /* Request.swift */,
 				OBJ_22 /* SourceFile.swift */,
 				OBJ_23 /* UnitTestBuilder.swift */,
@@ -834,7 +831,7 @@
 			path = Tests/CDDSwiftTests;
 			sourceTree = SOURCE_ROOT;
 		};
-		OBJ_5 /*  */ = {
+		OBJ_5 = {
 			isa = PBXGroup;
 			children = (
 				OBJ_6 /* Package.swift */,
@@ -850,7 +847,6 @@
 				OBJ_189 /* README.md */,
 				OBJ_190 /* LICENSE-MIT */,
 			);
-			name = "";
 			sourceTree = "<group>";
 		};
 		OBJ_51 /* Dependencies */ = {
@@ -1322,7 +1318,7 @@
 				English,
 				en,
 			);
-			mainGroup = OBJ_5 /*  */;
+			mainGroup = OBJ_5;
 			productRefGroup = OBJ_173 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -1365,7 +1361,6 @@
 				OBJ_202 /* Model.swift in Sources */,
 				OBJ_203 /* Project.swift in Sources */,
 				OBJ_204 /* ProjectInfo.swift in Sources */,
-				OBJ_205 /* ProjectReader.swift in Sources */,
 				OBJ_206 /* Request.swift in Sources */,
 				OBJ_207 /* SourceFile.swift in Sources */,
 				OBJ_208 /* UnitTestBuilder.swift in Sources */,

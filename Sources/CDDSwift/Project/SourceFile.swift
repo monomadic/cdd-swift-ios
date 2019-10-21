@@ -8,6 +8,14 @@
 import Foundation
 import SwiftSyntax
 
+protocol ProjectSource {
+    mutating func remove(name: String)
+    mutating func insert(model:Model) throws
+    mutating func update(model:Model)
+    mutating func insert(request:Request) throws
+    mutating func update(request:Request)
+}
+
 struct SourceFile: ProjectSource {
 	let url: URL
 	let modificationDate: Date
@@ -112,7 +120,7 @@ struct SourceFile: ProjectSource {
         
         var newClassSyntax = TypeAliasRewriter.rewrite(name: "ResponseType", syntax: request.responseTypeSyntax(), in: classSyntax)
         newClassSyntax = TypeAliasRewriter.rewrite(name: "ErrorType", syntax: request.errorTypeSyntax(), in: newClassSyntax)
-        newClassSyntax = VariableRewriter.rewrite(name: "urlPath", syntax: request.urlSyntax(), in: newClassSyntax)
+        newClassSyntax = VariableRewriter.rewrite(name: "path", syntax: request.urlSyntax(), in: newClassSyntax)
         newClassSyntax = VariableRewriter.rewrite(name: "method", syntax: request.methodSyntax(), in: newClassSyntax)
         self.syntax = ClassRewriter.rewrite(name: request.name, syntax: newClassSyntax, in: self.syntax)
     }
@@ -145,12 +153,12 @@ struct SourceFile: ProjectSource {
 extension Request {
     
     func methodSyntax() -> MemberDeclListItemSyntax {
-        return closureSyntax(name: "method", type: "HTTPMethod", returnValue: "." + self.method.rawValue)
+        return closureSyntax(name: "method", type: "HTTPMethod", returnValue: "." + self.method.rawValue.lowercased())
     }
     
     func urlSyntax() -> MemberDeclListItemSyntax {
-        let convertedUrlPath = urlPath.replacingOccurrences(of: "{", with: "\\(").replacingOccurrences(of: "}", with: ")")
-        return closureSyntax(name: "urlPath", type: "String", returnValue: "\"" + convertedUrlPath + "\"")
+        let convertedUrlPath = path.replacingOccurrences(of: "{", with: "\\(").replacingOccurrences(of: "}", with: ")")
+        return closureSyntax(name: "path", type: "String", returnValue: "\"" + convertedUrlPath + "\"")
     }
     
     func responseTypeSyntax() -> TypealiasDeclSyntax {
@@ -212,6 +220,7 @@ extension Request {
         return listItem
     }
 }
+
 
 extension Variable {
     func syntax() -> MemberDeclListItemSyntax {

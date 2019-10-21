@@ -69,33 +69,15 @@ struct Project: Codable {
 	var info: ProjectInfo
 	var models: [Model]
 	var requests: [Request]
-    
-    func merge(with swiftProject: Project) -> Project {
-        var newSwiftModels = swiftProject.models
-        newSwiftModels.removeAll(where: {$0.modificationDate.compare(info.modificationDate) == .orderedAscending})
-        let mergedModels = models.replaceWith(newestItems: newSwiftModels)
-        
-        var newSwiftRequests = swiftProject.requests
-        newSwiftRequests.removeAll(where: {$0.modificationDate.compare(info.modificationDate) == .orderedAscending})
-        let mergedRequests = requests.replaceWith(newestItems: newSwiftRequests)
-        
-        return Project(
-            info: self.info.merge(with: swiftProject.info),
-            models: mergedModels,
-            requests: mergedRequests
-        )
-        
-    }
 }
-
 
 extension Decodable {
     static func from(json: String) throws -> Self {
-        let data = try JSONSerialization.data(withJSONObject: json, options: .prettyPrinted)
-        
+        let data = json.data(using: .utf8)!
         return try JSONDecoder().decode(Self.self, from: data)
     }
 }
+
 
 extension Encodable {
     func json() throws -> String {

@@ -23,7 +23,7 @@ class WriteCommand: Command {
     
     init(operation: OperationType, source: SourceType) {
         self.operation = operation
-        name = operation.rawValue + "-" + source.rawValue + "s"
+        name = operation.rawValue + "-" + source.rawValue
         shortDescription = "\(operation.rawValue) \(source.rawValue) to swift sorce files"
         self.source = source
     }
@@ -40,6 +40,7 @@ class WriteCommand: Command {
         
         try write(path: path.value, json: json.value)
     }
+
     
     func write(path: String, json:String) throws {
         do {
@@ -55,6 +56,7 @@ class WriteCommand: Command {
             case .update:
                 switch source {
                 case .model:
+                    print(json)
                     try file.update(model: Model.from(json: json))
                 case .request:
                     try file.update(request: Request.from(json: json))

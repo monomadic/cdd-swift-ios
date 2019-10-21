@@ -38,8 +38,7 @@ func parseModels(sourceFiles: [SourceFile]) -> [Model] {
 		for klass in visitor.klasses {
 			if klass.interfaces.contains(MODEL_PROTOCOL) {
 				models[klass.name] = Model(name: klass.name,
-										   vars: klass.vars,
-										   modificationDate: sourceFile.modificationDate)
+										   vars: klass.vars)
 			}
 		}
 	}
@@ -57,7 +56,7 @@ func parse(sourceFiles: [SourceFile]) -> ([Model],[Request]) {
         
         for klass in visitor.klasses {
             if klass.interfaces.contains(MODEL_PROTOCOL) {
-				models[klass.name] = Model(name: klass.name, vars: klass.vars, modificationDate: sourceFile.modificationDate)
+				models[klass.name] = Model(name: klass.name, vars: klass.vars)
             }
         }
         
@@ -65,12 +64,12 @@ func parse(sourceFiles: [SourceFile]) -> ([Model],[Request]) {
             if klass.interfaces.contains(REQUEST_PROTOCOL) {
                 if let responseType = klass.typeAliases["ResponseType"],
                     let errorType = klass.typeAliases["ErrorType"],
-                    let path = klass.vars.first(where: {$0.name == "urlPath"})?.value,
+                    let path = klass.vars.first(where: {$0.name == "path"})?.value,
                     let methodRaw = klass.vars.first(where: {$0.name == "method"})?.value,
-                    let method = Method(rawValue:methodRaw){
+                    let method = Method(rawValue:methodRaw.components(separatedBy: ".").last?.uppercased() ?? ""){
                     var vars = klass.vars
-                    vars.removeAll(where: {$0.name == "urlPath" || $0.name == "method"})
-                    requests[klass.name] = Request(name:klass.name, method: method, urlPath: path, responseType: responseType, errorType: errorType, vars: vars,modificationDate: sourceFile.modificationDate)
+                    vars.removeAll(where: {$0.name == "path" || $0.name == "method"})
+                    requests[klass.name] = Request(name:klass.name, method: method, path: path, responseType: responseType, errorType: errorType, vars: vars)
                 }
             }
         }

@@ -10,5 +10,4 @@ import Foundation
 struct Model: ProjectObject, Codable {
 	var name: String
 	var vars: [Variable]
-	var modificationDate: Date
 }

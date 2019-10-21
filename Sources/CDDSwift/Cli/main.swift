@@ -3,8 +3,9 @@ import SwiftSyntax
 import SwiftCLI
 import Willow
 
+
 class Config {
-	var dryRun: Bool = false
+    var dryRun: Bool = false
 }
 
 let config = Config()
@@ -22,8 +23,10 @@ let cli = CLI(
         WriteCommand(operation:.insert,source:.request),
         WriteCommand(operation:.update,source:.request),
         WriteCommand(operation:.delete,source:.request)
-        
+
     ]
 )
 
 cli.goAndExit()
+
+//ListCommand(.request).read(path: "/Users/alexei/Documents/Projects/cdd.workspace/temp/iOS/cddTemplate/Source/API/APIRequests.swift")

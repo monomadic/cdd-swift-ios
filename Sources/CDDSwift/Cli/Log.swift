@@ -2,7 +2,7 @@ import Willow
 import Foundation
 
 
-var log = Willow.Logger(logLevels: [.event], writers: [ConsoleWriter(modifiers: [ColorModifier()])])
+var log = Willow.Logger(logLevels: [.event], writers: [])
 
 
 

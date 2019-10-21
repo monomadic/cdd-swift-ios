@@ -29,3 +29,6 @@ enum ProjectError : Error {
 		}
 	}
 }
+
+
+//[{"path":"ololo","method":"post","error_type":"Error","name":"Pet","response_type":"Error","vars":[{"name":"id","optional":false,"type":"Int"},{"name":"tag2","optional":true,"type":"String"},{"name":"name","optional":false,"type":"Int"}]}]
