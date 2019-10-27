@@ -153,7 +153,27 @@ struct SourceFile: ProjectSource {
 extension Request {
     
     func methodSyntax() -> MemberDeclListItemSyntax {
-        return closureSyntax(name: "method", type: "HTTPMethod", returnValue: "." + self.method.rawValue.lowercased())
+        let type = "HTTPMethod"
+        
+        let initializer = InitializerClauseSyntax {
+            $0.useEqual(SyntaxFactory.makeEqualToken().withLeadingTrivia(.spaces(1)).withTrailingTrivia(.spaces(1)))
+            $0.useValue(SyntaxFactory.makeVariableExpr("." + method.rawValue.lowercased()))
+        }
+        let Pattern = SyntaxFactory.makePatternBinding(
+            pattern: SyntaxFactory.makeIdentifierPattern(
+                identifier: SyntaxFactory.makeIdentifier("method").withLeadingTrivia(.spaces(1))),
+            typeAnnotation: SyntaxFactory.makeTypeAnnotation(
+                colon: SyntaxFactory.makeColonToken().withTrailingTrivia(.spaces(1)),
+                type: SyntaxFactory.makeTypeIdentifier(type)),
+            initializer: initializer, accessor: nil, trailingComma: nil)
+        
+        let decl = VariableDeclSyntax {
+            $0.useLetOrVarKeyword(SyntaxFactory.makeLetKeyword().withLeadingTrivia([.carriageReturns(1), .tabs(1)]))
+            $0.addPatternBinding(Pattern)
+        }
+        
+        let listItem = SyntaxFactory.makeMemberDeclListItem(decl: decl, semicolon: nil)
+        return listItem
     }
     
     func urlSyntax() -> MemberDeclListItemSyntax {

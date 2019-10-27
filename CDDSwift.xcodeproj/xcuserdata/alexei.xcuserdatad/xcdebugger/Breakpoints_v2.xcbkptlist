@@ -1,55 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Bucket
+   uuid = "686FC347-DF36-4BD8-BD16-B0C9D1202E84"
    type = "1"
    version = "2.0">
-   <Breakpoints>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Sources/CDDSwift/SourceParser/SourceParser.swift"
-            timestampString = "593259789.467548"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "71"
-            endingLineNumber = "71"
-            landmarkName = "parse(sourceFiles:)"
-            landmarkType = "9">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "CDDSwift.parse(sourceFiles: Swift.Array&lt;CDDSwift.SourceFile&gt;) -&gt; (Swift.Array&lt;CDDSwift.Model&gt;, Swift.Array&lt;CDDSwift.Request&gt;)"
-                  moduleName = "CDDSwift"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/alexei/Documents/Projects/cdd.workspace/cdd-swift-ios/Sources/CDDSwift/SourceParser/SourceParser.swift"
-                  timestampString = "593259789.882392"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "71"
-                  endingLineNumber = "71"
-                  offsetFromSymbolStart = "5755">
-               </Location>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #3 (CDDSwift.Variable) -&gt; Swift.Bool in CDDSwift.parse(sourceFiles: Swift.Array&lt;CDDSwift.SourceFile&gt;) -&gt; (Swift.Array&lt;CDDSwift.Model&gt;, Swift.Array&lt;CDDSwift.Request&gt;)"
-                  moduleName = "CDDSwift"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/alexei/Documents/Projects/cdd.workspace/cdd-swift-ios/Sources/CDDSwift/SourceParser/SourceParser.swift"
-                  timestampString = "593259789.884012"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "71"
-                  endingLineNumber = "71"
-                  offsetFromSymbolStart = "44">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-   </Breakpoints>
 </Bucket>

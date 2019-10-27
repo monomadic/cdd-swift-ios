@@ -40,4 +40,4 @@ enum Method: String, Codable {
     case delete = "DELETE"
 }
 
-///Users/alexei/.cdd/services/cdd-swift insert-request ./iOS/cddTemplate/Source/API/APIRequests.swift '{"name":"randomName","path":"/pets","vars":[{"name":"limit","type":"Int","optional":true,"value":null}],"method":"GET","response_type":"Pets","error_type":"Error"}'
+
