@@ -8,11 +8,11 @@ INSTALL_PATH = $(PREFIX)/bin/$(TOOL_NAME)
 
 install-release:
 	swift build --disable-sandbox -c release
-	cp $(BUILD_PATH) ~/.cdd/services/$(TOOL_NAME)
+	cp $(BUILD_PATH) ~/.cdd/bin/$(TOOL_NAME)
 
 install:
 	swift build
-	cp .build/debug/$(TOOL_NAME) ~/.cdd/services/$(TOOL_NAME)
+	cp .build/debug/$(TOOL_NAME) ~/.cdd/bin/$(TOOL_NAME)
 
 build:
 	swift build
