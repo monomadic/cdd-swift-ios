@@ -32,6 +32,7 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		AAE00F29237D007700C57778 /* TestsCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE00F28237D007700C57778 /* TestsCommand.swift */; };
 		OBJ_196 /* ListCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_10 /* ListCommand.swift */; };
 		OBJ_197 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_11 /* Log.swift */; };
 		OBJ_198 /* StdOut.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_12 /* StdOut.swift */; };
@@ -331,6 +332,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		AAE00F28237D007700C57778 /* TestsCommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestsCommand.swift; sourceTree = "<group>"; };
 		"CDDSwift::CDDSwift::Product" /* CDDSwift */ = {isa = PBXFileReference; lastKnownFileType = text; path = CDDSwift; sourceTree = BUILT_PRODUCTS_DIR; };
 		"CDDSwift::CDDSwiftTests::Product" /* CDDSwiftTests.xctest */ = {isa = PBXFileReference; lastKnownFileType = file; path = CDDSwiftTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		"JSONUtilities::JSONUtilities::Product" /* JSONUtilities.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = JSONUtilities.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -964,6 +966,7 @@
 				OBJ_12 /* StdOut.swift */,
 				OBJ_10 /* ListCommand.swift */,
 				OBJ_13 /* WriteCommand.swift */,
+				AAE00F28237D007700C57778 /* TestsCommand.swift */,
 				OBJ_14 /* main.swift */,
 			);
 			path = Cli;
@@ -1372,6 +1375,7 @@
 				OBJ_214 /* PathExtractor.swift in Sources */,
 				OBJ_215 /* RouteExtractor.swift in Sources */,
 				OBJ_216 /* Factories.swift in Sources */,
+				AAE00F29237D007700C57778 /* TestsCommand.swift in Sources */,
 				OBJ_217 /* Codeblocks.swift in Sources */,
 				OBJ_218 /* Rewriters.swift in Sources */,
 				OBJ_219 /* VariableRewriter.swift in Sources */,

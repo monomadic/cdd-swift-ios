@@ -23,7 +23,6 @@ let cli = CLI(
         WriteCommand(operation:.insert,source:.request),
         WriteCommand(operation:.update,source:.request),
         WriteCommand(operation:.delete,source:.request)
-
     ]
 )
 

@@ -9,16 +9,18 @@ import Foundation
 
 
 class TestsBuilder {
-    var project: Project
+    var models: [Model]
+    var requests: [Request]
     var projectName: String
     
-    init(project: Project, projectName: String) {
-        self.project = project
+    init(projectName: String, models: [Model], requests: [Request]) {
+        self.requests = requests
+        self.models = models
         self.projectName = projectName
     }
     
     func build() -> String {
-        let testFunctions =  project.requests.map({buildTest(from: $0)}).joined(separator: "\n\n")
+        let testFunctions =  requests.map({buildTest(from: $0)}).joined(separator: "\n\n")
         
         return """
         import XCTest
@@ -37,7 +39,7 @@ class TestsBuilder {
         
         var jsonString = ""
         let modelName = request.responseType.replacingOccurrences(of: "[", with: "").replacingOccurrences(of: "]", with: "")
-        if let model = project.models.first(where: {$0.name == modelName}) {
+        if let model = models.first(where: {$0.name == modelName}) {
             jsonString = "\(model.name)(\(buildParams(model.vars)))"
             
             if request.responseType.hasPrefix("[") {
@@ -86,7 +88,7 @@ class TestsBuilder {
     
     private func buildResponse(for request: Request) -> String {
         let modelName = request.responseType.replacingOccurrences(of: "[", with: "").replacingOccurrences(of: "]", with: "")
-        guard let model = project.models.first(where: {$0.name == modelName}) else { return "{}"}
+        guard let model = models.first(where: {$0.name == modelName}) else { return "{}"}
         
         
         let modelJSON = "{" + buildJSON(model.vars) + "}"
