@@ -22,7 +22,8 @@ let cli = CLI(
         WriteCommand(operation:.delete,source:.model),
         WriteCommand(operation:.insert,source:.request),
         WriteCommand(operation:.update,source:.request),
-        WriteCommand(operation:.delete,source:.request)
+        WriteCommand(operation:.delete,source:.request),
+        TestsCommand()
     ]
 )
 
