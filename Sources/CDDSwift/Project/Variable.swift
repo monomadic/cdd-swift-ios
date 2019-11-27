@@ -33,48 +33,69 @@ indirect enum Type: Equatable, Codable {
     case complex(String)
     
     enum CodingKeys: String, CodingKey {
-        case array
-        case primitive
-        case complex
+        case Array
+        case Complex
     }
     
     public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
         switch self {
         case .primitive(let type):
             try type.encode(to: encoder)
 //            try container.encode(type, forKey: .primitive)
         case .array(let type):
-            let str = try type.json()
-            try str.encode(to: encoder)
-//            try container.encode(type, forKey: .array)
+//            let str = try type.json()
+//            try ("[" + str + "]").encode(to: encoder)
+            try container.encode(type, forKey: .Array)
         case .complex(let type):
-            try type.encode(to: encoder)
-//            try container.encode(type, forKey: .complex)
+//            try type.encode(to: encoder)
+            try container.encode(type, forKey: .Complex)
         }
     }
     
     init(from decoder: Decoder) throws {
-        let container = try decoder.singleValueContainer()
-        var str = try container.decode(String.self)
-        self = Type.decode(str:str)
+        let container = try? decoder.singleValueContainer()
+        if let str = try? container?.decode(String.self) {
+            self = Type.decode(str:str)
+        }
+        else {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            
+            if let type = try? container.decode(String.self, forKey: .Complex) {
+                self = .array(Type.decode(str: type))
+            }
+            else
+            if let type = try? container.decode(String.self, forKey: .Array) {
+                self = .array(Type.decode(str: type))
+            }
+            else
+            if let type = try? container.decode(Type.self, forKey: .Array) {
+                self = .array(type)
+            }
+            else {
+                self = .complex("unknown")
+            }
+        }
+        
     }
     
     private static func decode(str: String) -> Type {
-        var str = str
+//        var str = str
         switch str {
         case "Int": return .primitive(.Int)
         case "String": return .primitive(.String)
         case "Float": return .primitive(.Float)
         case "Bool": return .primitive(.Bool)
         default:
-            if String(str.suffix(1)) == "[" {
-                str = String(str.suffix(str.count - 1))
-                str = String(str.prefix(str.count - 1))
-                return .array(decode(str: str))
-            }
-            else {
-                return .complex(str)
-            }
+            return .complex(str)
+//            if String(str.suffix(1)) == "[" {
+//                str = String(str.suffix(str.count - 1))
+//                str = String(str.prefix(str.count - 1))
+//                return .Array(decode(str: str))
+//            }
+//            else {
+//                return .Complex(str)
+//            }
         }
     }
 }
